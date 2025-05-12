@@ -1,0 +1,13 @@
+services:
+    db:
+        container_name: order-manager-db
+        image: mcr.microsoft.com/mssql/server
+        environment:
+            "ACCEPT_EULA": "Y"
+            "MSSQL_SA_PASSWORD": "#$3quoR123"
+            "MSSQL_PID": "Developer"
+        volumes:
+            - ./db/data:/var/opt/mssql/data
+            - ./db/log:/var/opt/mssql/log
+        ports:
+            - "1433:1433"

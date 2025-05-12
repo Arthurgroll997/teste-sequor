@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "zkuRVg98wNwD2+Q3h9d277RxJuSYm0hOe23bjKjkqD4=",
+  "Source": "OrderManagerBack",
+  "BasePath": "_content/OrderManagerBack",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
