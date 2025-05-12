@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Numerics;
 
 namespace OrderManagerBack.Entities
 {
@@ -9,7 +10,7 @@ namespace OrderManagerBack.Entities
         [Key]
         [Column("ID")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // Essa opção satizfaz o requisito de "IDENTITY(1,1)".
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Column(name: "Email", TypeName = "VARCHAR")]
         [MaxLength(100)]
@@ -23,13 +24,13 @@ namespace OrderManagerBack.Entities
         public DateTime Date { get; set; }
 
         [Column(name: "Quantity", TypeName = "NUMERIC(18,2)")]
-        public string Quantity { get; set; }
+        public decimal Quantity { get; set; }
 
         [Column(name: "MaterialCode", TypeName = "VARCHAR")]
         [MaxLength(50)]
         public string MaterialCode { get; set; }
 
         [Column(name: "CycleTime", TypeName = "NUMERIC(18,2)")]
-        public string CycleTime { get; set; }
+        public decimal CycleTime { get; set; }
     }
 }
