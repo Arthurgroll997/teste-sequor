@@ -1,3 +1,5 @@
 .vs/
 db/data
 db/log
+bin/
+obj/
