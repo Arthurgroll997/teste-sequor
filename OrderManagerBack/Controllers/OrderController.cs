@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.EntityFrameworkCore;
 using OrderManagerBack.Database;
 using OrderManagerBack.Entities;
 
 namespace OrderManagerBack.Controllers
 {
     [ApiController]
-    [Route("api/orders/[controller]")]
+    [Route("api/orders")]
     public class OrderController : ControllerBase
     {
         private readonly OrderManagerContext _ctx;
@@ -15,21 +17,25 @@ namespace OrderManagerBack.Controllers
             _ctx = ctx;
         }
 
-        [HttpGet(Name = "GetOrders")]
-        public string? GetOrders() {
+        [HttpGet("GetOrders", Name = "GetOrders")]
+        public ActionResult GetOrders() {
             // TODO
-            return null;
+            return Ok(new
+            {
+                orders = _ctx.Orders.Include(order => order.Product)
+                    .Include(order => order.Product.Materials).Select(o => o.ToDto()).ToList()
+            });
         }
 
-        [HttpGet(Name = "GetProduction")]
-        public string? GetProduction([FromQuery(Name = "email")] string? email)
+        [HttpGet("GetProduction", Name = "GetProduction")]
+        public ActionResult GetProduction()
         {
             // TODO
             return null;
         }
 
-        [HttpPost(Name = "SetProduction")]
-        public string? SetProduction()
+        [HttpPost("SetProduction", Name = "SetProduction")]
+        public ActionResult SetProduction([FromQuery(Name = "email")] string? email)
         {
             // TODO
             return null;
