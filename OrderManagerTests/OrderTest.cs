@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OrderManagerBack;
 using OrderManagerBack.Controllers;
 using OrderManagerBack.Dto;
 
@@ -45,7 +46,7 @@ namespace OrderManagerTests
             using var context = Fixture.CreateContext();
             var orderController = new OrderController(context);
 
-            var producoes = orderController.GetProduction();
+            var producoes = orderController.GetProduction("teste@sequor.com.br");
 
             var okResult = Assert.IsType<OkObjectResult>(producoes);
 
@@ -66,15 +67,84 @@ namespace OrderManagerTests
         }
 
         [Fact]
+        public void GetProductionShouldReturnEmptyListWhenEmailMatchesNoProductions()
+        {
+            using var context = Fixture.CreateContext();
+            var orderController = new OrderController(context);
+
+            var producoes = orderController.GetProduction("inexistente@sequor.com.br");
+
+            var okResult = Assert.IsType<OkObjectResult>(producoes);
+
+            dynamic returnValue = okResult.Value;
+            Assert.NotNull(returnValue);
+
+            var productionsProperty = returnValue!.GetType().GetProperty("productions");
+            Assert.NotNull(productionsProperty);
+
+            var productions = productionsProperty.GetValue(returnValue) as IEnumerable<ProductionDto>;
+            Assert.NotNull(productions);
+            Assert.Empty(productions);
+        }
+        
+        [Fact]
         public void SetProductionShouldWorkCorrecty()
         {
+            using var context = Fixture.CreateContext();
+            var orderController = new OrderController(context);
 
+            var newProductionDto = new SetProductionInputDto()
+            {
+                Email = "invalido@sequor.com.br",
+                Order = "001",
+                ProductionDate = DateTime.Now.AddMinutes(10).ToString("yyyy-MM-dd"),
+                ProductionTime = TimeSpan.FromMinutes(10).ToString(@"hh\:mm\:ss"),
+                Quantity = 30,
+                MaterialCode = "001",
+                CycleTime = 15m,
+            };
+
+            var result = orderController.SetProduction(newProductionDto);
+
+            var badReqResult = Assert.IsType<BadRequestObjectResult>(result);
+
+            dynamic returnValue = badReqResult.Value;
+            Assert.NotNull(returnValue);
+
+            var productionResult = (returnValue as SetProductionStatusDto)!;
+
+            Assert.Equal(Constants.DEFAULT_ERROR_STATUS, productionResult.Status);
+            Assert.Equal(Constants.DEFAULT_ERROR_CHARACTER, productionResult.Type);
+            Assert.Equal(Constants.SET_PRODUCTION_INVALID_EMAIL, productionResult.Description);
         }
 
         [Fact]
         public void SetProductionShouldNotWorkWithInvalidEmail()
         {
+            using var context = Fixture.CreateContext();
+            var orderController = new OrderController(context);
 
+            var newProductionDto = new SetProductionInputDto()
+            {
+                Email = "invalido@sequor.com.br",
+                Order = "001",
+                ProductionDate = DateTime.Now.AddMinutes(10).ToString("yyyy-MM-dd"),
+                ProductionTime = TimeSpan.FromMinutes(10).ToString(@"hh\:mm\:ss"),
+                Quantity = 30,
+                MaterialCode = "001",
+                CycleTime = 15m,
+            };
+
+            var result = orderController.SetProduction(newProductionDto);
+
+            var createdAtResult = Assert.IsType<CreatedAtActionResult>(result);
+            Assert.Equal(201, createdAtResult.StatusCode);
+
+            dynamic returnValue = createdAtResult.Value;
+            Assert.NotNull(returnValue);
+
+            var productionProperty = returnValue.GetType().GetProperty("production");
+            Assert.NotNull(productionProperty);
         }
 
         [Fact]

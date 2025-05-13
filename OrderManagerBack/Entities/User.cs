@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using OrderManagerBack.Database;
 
 namespace OrderManagerBack.Entities
 {
@@ -20,5 +21,13 @@ namespace OrderManagerBack.Entities
 
         [Column(name: "EndDate", TypeName = "DATETIME")]
         public DateTime? EndDate { get; set; }
+
+        public bool IsRegistered(OrderManagerContext ctx)
+        {
+            if (Email == null || Email == string.Empty)
+                return false;
+
+            return ctx.Users.Where(u => u.Email == Email).Any();
+        }
     }
 }
