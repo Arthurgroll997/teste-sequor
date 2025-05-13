@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Numerics;
 using OrderManagerBack.Database;
 using OrderManagerBack.Dto;
+using OrderManagerBack.Entities;
 
 namespace OrderManagerBack.Models
 {
@@ -43,5 +44,22 @@ namespace OrderManagerBack.Models
         public bool HasMaterial(string materialCode) => Product.Materials.Where(m => m.MaterialCode == materialCode).Any();
 
         public bool WarnCycleTime(decimal cycleTime) => cycleTime < Product.CycleTime;
+
+        public void MakeProduction(DateTime productionDate, SetProductionInputDto productionInfo, OrderManagerContext ctx)
+        {
+            var production = new Production()
+            {
+                Email = productionInfo.Email,
+                OrderObj = this,
+                Date = productionDate,
+                Quantity = productionInfo.Quantity,
+                Material = ctx.Materials.Where(m => m.MaterialCode == productionInfo.MaterialCode).First()!,
+                CycleTime = productionInfo.CycleTime,
+            };
+
+            ctx.Add(production);
+
+            ctx.SaveChanges();
+        }
     }
 }

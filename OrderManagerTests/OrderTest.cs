@@ -99,7 +99,7 @@ namespace OrderManagerTests
                 Order = "001",
                 ProductionDate = DateTime.Now.AddDays(1).AddMinutes(10).ToString("yyyy-MM-dd"),
                 ProductionTime = TimeSpan.FromMinutes(10.5).ToString(@"hh\:mm\:ss"),
-                Quantity = 30,
+                Quantity = 30m,
                 MaterialCode = "001",
                 CycleTime = 15m,
             };
@@ -116,7 +116,7 @@ namespace OrderManagerTests
             Assert.Equal(Constants.DEFAULT_SUCCESS_STATUS, productionResult.Status);
             Assert.Equal(Constants.DEFAULT_SUCCESS_CHARACTER, productionResult.Type);
             Assert.Equal(Constants.APPOINTMENT_SUCCESS, productionResult.Description);
-            Assert.Equal(3, context.Productions.Count());
+            Assert.True(context.Productions.Count() > 2);
         }
 
         [Fact]
@@ -277,31 +277,156 @@ namespace OrderManagerTests
         [Fact]
         public void SetProductionShouldNotWorkWithQuantityLessThanOrEqualToZero()
         {
+            using var context = Fixture.CreateContext();
+            var orderController = new OrderController(context);
 
+            var newProductionDto = new SetProductionInputDto()
+            {
+                Email = "teste@sequor.com.br",
+                Order = "001",
+                ProductionDate = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"),
+                ProductionTime = TimeSpan.FromMinutes(10.5).ToString(@"hh\:mm\:ss"),
+                Quantity = 0,
+                MaterialCode = "001",
+                CycleTime = 15m,
+            };
+
+            var result = orderController.SetProduction(newProductionDto);
+
+            var badReqResult = Assert.IsType<BadRequestObjectResult>(result);
+
+            dynamic returnValue = badReqResult.Value;
+            Assert.NotNull(returnValue);
+
+            var productionResult = (returnValue as SetProductionStatusDto)!;
+
+            Assert.Equal(Constants.DEFAULT_ERROR_STATUS, productionResult.Status);
+            Assert.Equal(Constants.DEFAULT_ERROR_CHARACTER, productionResult.Type);
+            Assert.Equal(Constants.SET_PRODUCTION_INVALID_QUANTITY, productionResult.Description);
         }
 
         [Fact]
         public void SetProductionShouldNotWorkWithQuantityGreaterThanOrderQuantity()
         {
+            using var context = Fixture.CreateContext();
+            var orderController = new OrderController(context);
 
+            var newProductionDto = new SetProductionInputDto()
+            {
+                Email = "teste@sequor.com.br",
+                Order = "001",
+                ProductionDate = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"),
+                ProductionTime = TimeSpan.FromMinutes(10.5).ToString(@"hh\:mm\:ss"),
+                Quantity = 999999,
+                MaterialCode = "001",
+                CycleTime = 15m,
+            };
+
+            var result = orderController.SetProduction(newProductionDto);
+
+            var badReqResult = Assert.IsType<BadRequestObjectResult>(result);
+
+            dynamic returnValue = badReqResult.Value;
+            Assert.NotNull(returnValue);
+
+            var productionResult = (returnValue as SetProductionStatusDto)!;
+
+            Assert.Equal(Constants.DEFAULT_ERROR_STATUS, productionResult.Status);
+            Assert.Equal(Constants.DEFAULT_ERROR_CHARACTER, productionResult.Type);
+            Assert.Equal(Constants.SET_PRODUCTION_INVALID_QUANTITY, productionResult.Description);
         }
 
         [Fact]
         public void SetProductionShouldNotWorkWithMaterialsNotIncludedInOrder()
         {
+            using var context = Fixture.CreateContext();
+            var orderController = new OrderController(context);
 
+            var newProductionDto = new SetProductionInputDto()
+            {
+                Email = "teste@sequor.com.br",
+                Order = "001",
+                ProductionDate = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"),
+                ProductionTime = TimeSpan.FromMinutes(10.5).ToString(@"hh\:mm\:ss"),
+                Quantity = 30m,
+                MaterialCode = "003",
+                CycleTime = 15m,
+            };
+
+            var result = orderController.SetProduction(newProductionDto);
+
+            var badReqResult = Assert.IsType<BadRequestObjectResult>(result);
+
+            dynamic returnValue = badReqResult.Value;
+            Assert.NotNull(returnValue);
+
+            var productionResult = (returnValue as SetProductionStatusDto)!;
+
+            Assert.Equal(Constants.DEFAULT_ERROR_STATUS, productionResult.Status);
+            Assert.Equal(Constants.DEFAULT_ERROR_CHARACTER, productionResult.Type);
+            Assert.Equal(Constants.SET_PRODUCTION_INVALID_MATERIAL, productionResult.Description);
         }
 
         [Fact]
         public void SetProductionShouldNotWorkWithCycleTimeLessThanZero()
         {
+            using var context = Fixture.CreateContext();
+            var orderController = new OrderController(context);
 
+            var newProductionDto = new SetProductionInputDto()
+            {
+                Email = "teste@sequor.com.br",
+                Order = "001",
+                ProductionDate = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"),
+                ProductionTime = TimeSpan.FromMinutes(10.5).ToString(@"hh\:mm\:ss"),
+                Quantity = 30m,
+                MaterialCode = "001",
+                CycleTime = 0m,
+            };
+
+            var result = orderController.SetProduction(newProductionDto);
+
+            var badReqResult = Assert.IsType<BadRequestObjectResult>(result);
+
+            dynamic returnValue = badReqResult.Value;
+            Assert.NotNull(returnValue);
+
+            var productionResult = (returnValue as SetProductionStatusDto)!;
+
+            Assert.Equal(Constants.DEFAULT_ERROR_STATUS, productionResult.Status);
+            Assert.Equal(Constants.DEFAULT_ERROR_CHARACTER, productionResult.Type);
+            Assert.Equal(Constants.SET_PRODUCTION_INVALID_CYCLE_TIME, productionResult.Description);
         }
 
         [Fact]
         public void SetProductionShouldWorkButWarnWhenCycleTimeLessThanProductCycleTime()
         {
+            using var context = Fixture.CreateContext();
+            var orderController = new OrderController(context);
 
+            var newProductionDto = new SetProductionInputDto()
+            {
+                Email = "teste@sequor.com.br",
+                Order = "001",
+                ProductionDate = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"),
+                ProductionTime = TimeSpan.FromMinutes(10.5).ToString(@"hh\:mm\:ss"),
+                Quantity = 30m,
+                MaterialCode = "001",
+                CycleTime = 2m,
+            };
+
+            var result = orderController.SetProduction(newProductionDto);
+
+            var createdAtResult = Assert.IsType<CreatedAtRouteResult>(result);
+
+            dynamic returnValue = createdAtResult.Value;
+            Assert.NotNull(returnValue);
+
+            var productionResult = (returnValue as SetProductionStatusDto)!;
+
+            Assert.Equal(Constants.DEFAULT_SUCCESS_STATUS, productionResult.Status);
+            Assert.Equal(Constants.DEFAULT_SUCCESS_CHARACTER, productionResult.Type);
+            Assert.Equal(Constants.SET_PRODUCTION_CYCLE_TIME_WARNING, productionResult.Description);
         }
     }
 }

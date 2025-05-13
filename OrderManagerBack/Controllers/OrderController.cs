@@ -85,19 +85,7 @@ namespace OrderManagerBack.Controllers
             var finalMessage = order.WarnCycleTime(productionInfo.CycleTime) ?
                 Constants.SET_PRODUCTION_CYCLE_TIME_WARNING : Constants.APPOINTMENT_SUCCESS;
 
-            var production = new Production()
-            {
-                Email = productionInfo.Email,
-                OrderObj = order,
-                Date = parsedDate,
-                Quantity = productionInfo.Quantity,
-                Material = _ctx.Materials.Where(m => m.MaterialCode == productionInfo.MaterialCode).First()!,
-                CycleTime = productionInfo.CycleTime,
-            };
-
-            _ctx.Add(production);
-
-            _ctx.SaveChanges();
+            order.MakeProduction(parsedDate, productionInfo, _ctx);
 
             var successResult = new SetProductionStatusDto()
             {
