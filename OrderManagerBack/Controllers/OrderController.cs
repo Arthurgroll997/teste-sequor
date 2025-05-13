@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OrderManagerBack.Database;
 using OrderManagerBack.Dto;
@@ -38,22 +38,34 @@ namespace OrderManagerBack.Controllers
             });
         }
 
+        private BadRequestObjectResult BadReq(string message) => BadRequest(new SetProductionStatusDto()
+            {
+                Status = Constants.DEFAULT_ERROR_STATUS,
+                Type = Constants.DEFAULT_ERROR_CHARACTER,
+                Description = message,
+            });
+
         [HttpPost("SetProduction", Name = "SetProduction")]
         public ActionResult SetProduction([FromBody] SetProductionInputDto productionInfo)
         {
             var user = new User() { Email = productionInfo.Email };
 
             if (!user.IsRegistered(_ctx))
-            {
-                return BadRequest(new SetProductionStatusDto()
-                {
-                    Status = Constants.DEFAULT_ERROR_STATUS,
-                    Type = Constants.DEFAULT_ERROR_CHARACTER,
-                    Description = Constants.SET_PRODUCTION_INVALID_EMAIL,
-                });
-            }
+                return BadReq(Constants.SET_PRODUCTION_INVALID_EMAIL);
 
-            var finalResult = new SetProductionStatusDto()
+            _ctx.Add(new Production()
+            {
+                Email = productionInfo.Email,
+                OrderObj = _ctx.Orders.Where(o => o.OrderCode == productionInfo.Order).First()!,
+                Date = DateTime.Parse($"{productionInfo.ProductionDate} {productionInfo.ProductionTime}"),
+                Quantity = productionInfo.Quantity,
+                Material = _ctx.Materials.Where(m => m.MaterialCode == productionInfo.MaterialCode).First()!,
+                CycleTime = productionInfo.CycleTime,
+            });
+
+            _ctx.SaveChanges();
+
+            var successResult = new SetProductionStatusDto()
             {
                 Status = Constants.DEFAULT_SUCCESS_STATUS,
                 Type = Constants.DEFAULT_SUCCESS_CHARACTER,
@@ -62,8 +74,8 @@ namespace OrderManagerBack.Controllers
 
             return CreatedAtRoute(
                 routeName: nameof(SetProduction),
-                routeValues: finalResult,
-                value: finalResult);
+                routeValues: successResult,
+                value: successResult);
         }
     }
 }
