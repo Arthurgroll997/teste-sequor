@@ -27,7 +27,7 @@ namespace OrderManagerBack.Controllers
             });
         }
 
-        [HttpGet("GetProductions", Name = "GetProductions")]
+        [HttpGet("GetProduction", Name = "GetProduction")]
         public ActionResult GetProduction()
         {
             return Ok(new
