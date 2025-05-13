@@ -14,7 +14,7 @@ namespace OrderManagerTests
         }
 
         [Fact]
-        public async Task GetOrdersShouldReturnSuccessfully()
+        public void GetOrdersShouldReturnSuccessfully()
         {
             using var context = Fixture.CreateContext();
             var orderController = new OrderController(context);
@@ -26,82 +26,107 @@ namespace OrderManagerTests
             dynamic returnValue = okResult.Value;
             Assert.NotNull(returnValue);
 
-            var ordersProperty = returnValue.GetType().GetProperty("orders");
+            var ordersProperty = returnValue!.GetType().GetProperty("orders");
             Assert.NotNull(ordersProperty);
 
             var orders = ordersProperty.GetValue(returnValue) as IEnumerable<OrderDto>;
             Assert.NotNull(orders);
             Assert.NotEmpty(orders);
+
+            Assert.Equal(2, orders.Count());
+
+            var product = context.Orders.Where(o => o.Product.ProductCode == "001").First().ToDto();
+            Assert.Equal(orders.First().ProductCode, product.ProductCode);
         }
 
         [Fact]
-        public async Task GetProductionShouldReturnSuccessfully()
+        public void GetProductionShouldReturnSuccessfully()
+        {
+            using var context = Fixture.CreateContext();
+            var orderController = new OrderController(context);
+
+            var producoes = orderController.GetProduction();
+
+            var okResult = Assert.IsType<OkObjectResult>(producoes);
+
+            dynamic returnValue = okResult.Value;
+            Assert.NotNull(returnValue);
+
+            var productionsProperty = returnValue!.GetType().GetProperty("productions");
+            Assert.NotNull(productionsProperty);
+
+            var productions = productionsProperty.GetValue(returnValue) as IEnumerable<ProductionDto>;
+            Assert.NotNull(productions);
+            Assert.NotEmpty(productions);
+
+            Assert.Equal(2, productions.Count());
+
+            var material = context.Productions.Where(o => o.Material.MaterialCode == "001").First().ToDto();
+            Assert.Equal(productions.First().MaterialCode, material.MaterialCode);
+        }
+
+        [Fact]
+        public void SetProductionShouldWorkCorrecty()
         {
 
         }
 
         [Fact]
-        public async Task SetProductionShouldWorkCorrecty()
+        public void SetProductionShouldNotWorkWithInvalidEmail()
         {
 
         }
 
         [Fact]
-        public async Task SetProductionShouldNotWorkWithInvalidEmail()
+        public void SetProductionShouldNotWithoutEmail()
         {
 
         }
 
         [Fact]
-        public async Task SetProductionShouldNotWithoutEmail()
+        public void SetProductionShouldNotWorkWhenInvalidOrderIsGiven()
         {
 
         }
 
         [Fact]
-        public async Task SetProductionShouldNotWorkWhenInvalidOrderIsGiven()
+        public void SetProductionShouldNotWorkWhenUserAppointedDateExpired()
         {
 
         }
 
         [Fact]
-        public async Task SetProductionShouldNotWorkWhenUserAppointedDateExpired()
+        public void SetProductionShouldNotWorkWhenUserTriesBeforeAppointedDate()
         {
 
         }
 
         [Fact]
-        public async Task SetProductionShouldNotWorkWhenUserTriesBeforeAppointedDate()
+        public void SetProductionShouldNotWorkWithQuantityLessThanOrEqualToZero()
         {
 
         }
 
         [Fact]
-        public async Task SetProductionShouldNotWorkWithQuantityLessThanOrEqualToZero()
+        public void SetProductionShouldNotWorkWithQuantityGreaterThanOrderQuantity()
         {
 
         }
 
         [Fact]
-        public async Task SetProductionShouldNotWorkWithQuantityGreaterThanOrderQuantity()
+        public void SetProductionShouldNotWorkWithMaterialsNotIncludedInOrder()
         {
 
         }
 
         [Fact]
-        public async Task SetProductionShouldNotWorkWithMaterialsNotIncludedInOrder()
+        public void SetProductionShouldNotWorkWithCycleTimeLessThanZero()
         {
 
         }
 
         [Fact]
-        public async Task SetProductionShouldNotWorkWithCycleTimeLessThanZero()
-        {
-
-        }
-
-        [Fact]
-        public async Task SetProductionShouldWorkButWarnWhenCycleTimeLessThanProductCycleTime()
+        public void SetProductionShouldWorkButWarnWhenCycleTimeLessThanProductCycleTime()
         {
 
         }

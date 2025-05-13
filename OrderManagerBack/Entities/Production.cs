@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Numerics;
+using OrderManagerBack.Dto;
 using OrderManagerBack.Models;
 
 namespace OrderManagerBack.Entities
@@ -36,5 +37,17 @@ namespace OrderManagerBack.Entities
 
         [Column(name: "CycleTime", TypeName = "NUMERIC(18,2)")]
         public decimal CycleTime { get; set; }
+
+        public ProductionDto ToDto()
+        {
+            return new()
+            {
+                Order = OrderObj.OrderCode,
+                Date = Date,
+                Quantity = Quantity,
+                MaterialCode = Material.MaterialCode,
+                CycleTime = CycleTime,
+            };
+        }
     }
 }

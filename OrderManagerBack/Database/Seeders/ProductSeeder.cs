@@ -29,6 +29,7 @@ namespace OrderManagerBack.Database.Seeders
                         ProductDescription = "Chanfrador",
                         Materials = [ ferro, aluminio ],
                         Image = "chanfrador.jpg",
+                        CycleTime = 9m, // 9 segundos
                     },
                     new Product()
                     {
@@ -36,6 +37,7 @@ namespace OrderManagerBack.Database.Seeders
                         ProductDescription = "Caneta BIC",
                         Materials = [ aluminio, plastico ],
                         Image = "caneta_bic.jpg",
+                        CycleTime = 13m,
                     }
                 );
             }

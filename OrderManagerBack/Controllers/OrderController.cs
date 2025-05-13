@@ -18,20 +18,23 @@ namespace OrderManagerBack.Controllers
         }
 
         [HttpGet("GetOrders", Name = "GetOrders")]
-        public ActionResult GetOrders() {
-            // TODO
+        public ActionResult GetOrders()
+        {
             return Ok(new
             {
                 orders = _ctx.Orders.Include(order => order.Product)
-                    .Include(order => order.Product.Materials).Select(o => o.ToDto()).ToList()
+                    .Include(order => order.Product.Materials).Select(o => o.ToDto()).ToList(),
             });
         }
 
-        [HttpGet("GetProduction", Name = "GetProduction")]
+        [HttpGet("GetProductions", Name = "GetProductions")]
         public ActionResult GetProduction()
         {
-            // TODO
-            return null;
+            return Ok(new
+            {
+                productions = _ctx.Productions.Include(prod => prod.OrderObj)
+                    .Include(prod => prod.Material).Select(o => o.ToDto()).ToList(),
+            });
         }
 
         [HttpPost("SetProduction", Name = "SetProduction")]
