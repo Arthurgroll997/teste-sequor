@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Numerics;
+using OrderManagerBack.Database;
 using OrderManagerBack.Dto;
 
 namespace OrderManagerBack.Models
@@ -31,5 +32,8 @@ namespace OrderManagerBack.Models
                 Materials = Product.Materials.Select(mat => mat.ToDto()).ToList(),
             };
         }
+
+        public bool Exists(OrderManagerContext ctx) => ctx.Orders.Any(o => o.OrderCode == OrderCode);
+
     }
 }

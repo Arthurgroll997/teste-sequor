@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using OrderManagerBack.Database;
 using OrderManagerBack.Dto;
 using OrderManagerBack.Entities;
+using OrderManagerBack.Models;
 
 namespace OrderManagerBack.Controllers
 {
@@ -49,9 +50,13 @@ namespace OrderManagerBack.Controllers
         public ActionResult SetProduction([FromBody] SetProductionInputDto productionInfo)
         {
             var user = new User() { Email = productionInfo.Email };
+            var order = new Order() { OrderCode = productionInfo.Order };
 
             if (!user.IsRegistered(_ctx))
                 return BadReq(Constants.SET_PRODUCTION_INVALID_EMAIL);
+
+            if (!order.Exists(_ctx))
+                return BadReq(Constants.SET_PRODUCTION_INVALID_ORDER);
 
             _ctx.Add(new Production()
             {

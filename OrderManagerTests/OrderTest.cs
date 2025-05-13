@@ -184,7 +184,32 @@ namespace OrderManagerTests
         [Fact]
         public void SetProductionShouldNotWorkWhenInvalidOrderIsGiven()
         {
+            using var context = Fixture.CreateContext();
+            var orderController = new OrderController(context);
 
+            var newProductionDto = new SetProductionInputDto()
+            {
+                Email = "teste@sequor.com.br",
+                Order = "005",
+                ProductionDate = DateTime.Now.AddMinutes(10).ToString("yyyy-MM-dd"),
+                ProductionTime = TimeSpan.FromMinutes(10.5).ToString(@"hh\:mm\:ss"),
+                Quantity = 30,
+                MaterialCode = "001",
+                CycleTime = 15m,
+            };
+
+            var result = orderController.SetProduction(newProductionDto);
+
+            var badReqResult = Assert.IsType<BadRequestObjectResult>(result);
+
+            dynamic returnValue = badReqResult.Value;
+            Assert.NotNull(returnValue);
+
+            var productionResult = (returnValue as SetProductionStatusDto)!;
+
+            Assert.Equal(Constants.DEFAULT_ERROR_STATUS, productionResult.Status);
+            Assert.Equal(Constants.DEFAULT_ERROR_CHARACTER, productionResult.Type);
+            Assert.Equal(Constants.SET_PRODUCTION_INVALID_ORDER, productionResult.Description);
         }
 
         [Fact]

@@ -10,5 +10,6 @@
         public const string DEFAULT_ERROR_CHARACTER = "E";
 
         public const string SET_PRODUCTION_INVALID_EMAIL = GENERIC_FAIL + " - Usuário não cadastrado!";
+        public const string SET_PRODUCTION_INVALID_ORDER = GENERIC_FAIL + " - Ordem inválida!";
     }
 }
