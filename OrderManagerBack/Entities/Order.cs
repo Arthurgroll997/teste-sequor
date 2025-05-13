@@ -38,5 +38,10 @@ namespace OrderManagerBack.Models
 
         public bool Exists(OrderManagerContext ctx) => ctx.Orders.Any(o => o.OrderCode == OrderCode);
 
+        public bool IsQuantityValid(decimal quantity) => quantity > 0 && quantity <= Quantity;
+
+        public bool HasMaterial(string materialCode) => Product.Materials.Where(m => m.MaterialCode == materialCode).Any();
+
+        public bool WarnCycleTime(decimal cycleTime) => cycleTime < Product.CycleTime;
     }
 }

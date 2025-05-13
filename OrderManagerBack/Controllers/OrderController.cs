@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using OrderManagerBack.Database;
 using OrderManagerBack.Dto;
 using OrderManagerBack.Entities;
@@ -53,6 +54,9 @@ namespace OrderManagerBack.Controllers
         [HttpPost("SetProduction", Name = "SetProduction")]
         public ActionResult SetProduction([FromBody] SetProductionInputDto productionInfo)
         {
+            if (productionInfo.CycleTime <= 0m)
+                return BadReq(Constants.SET_PRODUCTION_INVALID_CYCLE_TIME);
+
             var parsedDate = DateTime.Parse($"{productionInfo.ProductionDate} {productionInfo.ProductionTime}");
 
             var user = new User() { Email = productionInfo.Email };
@@ -69,10 +73,22 @@ namespace OrderManagerBack.Controllers
             if (!order.Exists(_ctx))
                 return BadReq(Constants.SET_PRODUCTION_INVALID_ORDER);
 
+            order = _ctx.Orders.Where(o => o.OrderCode == productionInfo.Order).Include(order => order.Product)
+                    .Include(order => order.Product.Materials).First()!;
+
+            if (!order.IsQuantityValid(productionInfo.Quantity))
+                return BadReq(Constants.SET_PRODUCTION_INVALID_QUANTITY);
+
+            if (!order.HasMaterial(productionInfo.MaterialCode))
+                return BadReq(Constants.SET_PRODUCTION_INVALID_MATERIAL);
+
+            var finalMessage = order.WarnCycleTime(productionInfo.CycleTime) ?
+                Constants.SET_PRODUCTION_CYCLE_TIME_WARNING : Constants.APPOINTMENT_SUCCESS;
+
             var production = new Production()
             {
                 Email = productionInfo.Email,
-                OrderObj = _ctx.Orders.Where(o => o.OrderCode == productionInfo.Order).First()!,
+                OrderObj = order,
                 Date = parsedDate,
                 Quantity = productionInfo.Quantity,
                 Material = _ctx.Materials.Where(m => m.MaterialCode == productionInfo.MaterialCode).First()!,
@@ -87,7 +103,7 @@ namespace OrderManagerBack.Controllers
             {
                 Status = Constants.DEFAULT_SUCCESS_STATUS,
                 Type = Constants.DEFAULT_SUCCESS_CHARACTER,
-                Description = Constants.APPOINTMENT_SUCCESS,
+                Description = finalMessage,
             };
 
             return CreatedAtRoute(
