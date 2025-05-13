@@ -24,7 +24,7 @@ namespace OrderManagerBack.Database.Seeders
                     Email = "teste@sequor.com.br",
                     Name = "Teste Sequor",
                     InitialDate = DateTime.Now,
-                    EndDate = null,
+                    EndDate = DateTime.Now.AddDays(7),
                 });
             }
 

@@ -11,5 +11,6 @@
 
         public const string SET_PRODUCTION_INVALID_EMAIL = GENERIC_FAIL + " - Usuário não cadastrado!";
         public const string SET_PRODUCTION_INVALID_ORDER = GENERIC_FAIL + " - Ordem inválida!";
+        public const string SET_PRODUCTION_INVALID_DATE = GENERIC_FAIL + " - Data de apontamento inválida!";
     }
 }

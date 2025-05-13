@@ -20,7 +20,7 @@ namespace OrderManagerBack.Entities
         public DateTime InitialDate { get; set; }
 
         [Column(name: "EndDate", TypeName = "DATETIME")]
-        public DateTime? EndDate { get; set; }
+        public DateTime EndDate { get; set; }
 
         public bool IsRegistered(OrderManagerContext ctx)
         {
@@ -29,5 +29,8 @@ namespace OrderManagerBack.Entities
 
             return ctx.Users.Where(u => u.Email == Email).Any();
         }
+
+        public bool IsValidInPeriod(DateTime period) =>
+            period.Subtract(InitialDate).TotalMilliseconds > 0 && EndDate.Subtract(period).TotalMilliseconds > 0;
     }
 }

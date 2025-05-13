@@ -13,19 +13,23 @@ namespace OrderManagerBack.Controllers
     public class OrderController : ControllerBase
     {
         private readonly OrderManagerContext _ctx;
+        private readonly IWebHostEnvironment? _env;
 
-        public OrderController(OrderManagerContext ctx)
+        public OrderController(OrderManagerContext ctx, IWebHostEnvironment? env = null)
         {
             _ctx = ctx;
+            _env = env;
         }
 
         [HttpGet("GetOrders", Name = "GetOrders")]
         public ActionResult GetOrders()
         {
+            var imgPath = _env is not null ? Path.Combine(_env.ContentRootPath, "public", "data", "images") : null;
+
             return Ok(new
             {
                 orders = _ctx.Orders.Include(order => order.Product)
-                    .Include(order => order.Product.Materials).Select(o => o.ToDto()).ToList(),
+                    .Include(order => order.Product.Materials).Select(o => o.ToDto(imgPath)).ToList(),
             });
         }
 
@@ -49,24 +53,33 @@ namespace OrderManagerBack.Controllers
         [HttpPost("SetProduction", Name = "SetProduction")]
         public ActionResult SetProduction([FromBody] SetProductionInputDto productionInfo)
         {
+            var parsedDate = DateTime.Parse($"{productionInfo.ProductionDate} {productionInfo.ProductionTime}");
+
             var user = new User() { Email = productionInfo.Email };
             var order = new Order() { OrderCode = productionInfo.Order };
 
             if (!user.IsRegistered(_ctx))
                 return BadReq(Constants.SET_PRODUCTION_INVALID_EMAIL);
 
+            user = _ctx.Users.Where(u => u.Email == productionInfo.Email).First()!;
+
+            if (!user.IsValidInPeriod(parsedDate))
+                return BadReq(Constants.SET_PRODUCTION_INVALID_DATE);
+
             if (!order.Exists(_ctx))
                 return BadReq(Constants.SET_PRODUCTION_INVALID_ORDER);
 
-            _ctx.Add(new Production()
+            var production = new Production()
             {
                 Email = productionInfo.Email,
                 OrderObj = _ctx.Orders.Where(o => o.OrderCode == productionInfo.Order).First()!,
-                Date = DateTime.Parse($"{productionInfo.ProductionDate} {productionInfo.ProductionTime}"),
+                Date = parsedDate,
                 Quantity = productionInfo.Quantity,
                 Material = _ctx.Materials.Where(m => m.MaterialCode == productionInfo.MaterialCode).First()!,
                 CycleTime = productionInfo.CycleTime,
-            });
+            };
+
+            _ctx.Add(production);
 
             _ctx.SaveChanges();
 

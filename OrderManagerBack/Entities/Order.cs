@@ -19,7 +19,10 @@ namespace OrderManagerBack.Models
                                               // alta precisão de +15 dígitos recomendada.
         public Product Product { get; set; } // Simplifica para obter o produto e gera a mesma estrutura de tabela requisitada
     
-        public OrderDto ToDto()
+        private string GetProductImage(string imagePath) =>
+            Convert.ToBase64String(File.ReadAllBytes(imagePath));
+
+        public OrderDto ToDto(string? imagePath = null)
         {
             return new()
             {
@@ -27,7 +30,7 @@ namespace OrderManagerBack.Models
                 Quantity = Quantity,
                 ProductCode = Product.ProductCode,
                 ProductDescription = Product.ProductDescription,
-                Image = Product.Image,
+                Image = imagePath is not null ? GetProductImage(Path.Combine(imagePath, Product.Image)) : Product.Image,
                 CycleTime = Product.CycleTime,
                 Materials = Product.Materials.Select(mat => mat.ToDto()).ToList(),
             };
