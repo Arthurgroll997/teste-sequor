@@ -24,7 +24,7 @@ namespace OrderManagerBack.Models
         public decimal CycleTime { get; set; } // Novamente, utilizado tipo decimal para cobrir a precisão de +15 dígitos do
                                                // numeric(18, 2)
 
-        public List<Material> Materials { get; } = []; // Cria a relação entre produtos e materiais especificada no
-                                                           // método "OnModelCreating" no OrderManagerContext.
+        public List<Material> Materials { get; set; } = []; // Cria a relação entre produtos e materiais especificada no
+                                                            // método "OnModelCreating" no OrderManagerContext.
     }
 }

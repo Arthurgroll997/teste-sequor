@@ -1,6 +1,8 @@
 ﻿using System.Runtime.ConstrainedExecution;
+using System.Runtime.Intrinsics.Arm;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using OrderManagerBack.Database.Seeders;
 using OrderManagerBack.Entities;
 using OrderManagerBack.Models;
 
@@ -27,6 +29,34 @@ namespace OrderManagerBack.Database
                     r => r.HasOne(typeof(Product)).WithMany().HasForeignKey("ProductCode")
                         .HasPrincipalKey(nameof(Product.ProductCode)),
                     j => j.HasKey("ProductCode", "MaterialCode"));
+
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.Product)
+                .WithMany()
+                .HasForeignKey("ProductCode")
+                .HasPrincipalKey(p => p.ProductCode);
+
+            modelBuilder.Entity<Production>(production =>
+            {
+                production.HasOne(p => p.OrderObj)
+                    .WithMany()
+                    .HasForeignKey("Order")
+                    .HasPrincipalKey(o => o.OrderCode);
+
+                production.HasOne(p => p.Material)
+                    .WithMany()
+                    .HasForeignKey("MaterialCode")
+                    .HasPrincipalKey(m => m.MaterialCode);
+            });
+        }
+
+        public void Seed()
+        {
+            new UserSeeder(this).Populate();
+            new MaterialSeeder(this).Populate();
+            new ProductSeeder(this).Populate();
+            new OrderSeeder(this).Populate();
+            new ProductionSeeder(this).Populate();
         }
     }
 }

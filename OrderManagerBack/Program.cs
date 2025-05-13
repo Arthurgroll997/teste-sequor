@@ -11,11 +11,17 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<OrderManagerContext>(opt => {
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-    var ret = opt.UseSqlServer(connectionString);
-
+    opt.UseSqlServer(connectionString);
 });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<OrderManagerContext>();
+    dbContext.Database.EnsureCreated();
+    dbContext.Seed(); // Popula o BD caso não haja dados ainda
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -23,13 +29,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-// Cria o banco (se não existir) ao iniciar
-//using (var scope = app.Services.CreateScope())
-//{
-//    var dbContext = scope.ServiceProvider.GetRequiredService<OrderManagerContext>();
-//    dbContext.Database.Migrate();
-//}
 
 app.UseHttpsRedirection();
 

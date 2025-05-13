@@ -16,8 +16,6 @@ namespace OrderManagerBack.Models
         public decimal Quantity { get; set; } // O tipo decimal é utilizado ao invés do double para suprir a
                                               // alta precisão de +15 dígitos recomendada.
 
-        [Column(name: "ProductCode", TypeName = "VARCHAR")]
-        [MaxLength(50)]
-        public string ProductCode { get; set; }
+        public Product Product { get; set; } // Simplifica para obter o produto e gera a mesma estrutura de tabela requisitada
     }
 }

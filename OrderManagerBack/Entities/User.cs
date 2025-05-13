@@ -19,6 +19,6 @@ namespace OrderManagerBack.Entities
         public DateTime InitialDate { get; set; }
 
         [Column(name: "EndDate", TypeName = "DATETIME")]
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
     }
 }

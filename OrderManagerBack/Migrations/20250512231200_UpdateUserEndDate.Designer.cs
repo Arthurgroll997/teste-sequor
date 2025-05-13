@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OrderManagerBack.Database;
 
@@ -11,9 +12,11 @@ using OrderManagerBack.Database;
 namespace OrderManagerBack.Migrations
 {
     [DbContext(typeof(OrderManagerContext))]
-    partial class OrderManagerContextModelSnapshot : ModelSnapshot
+    [Migration("20250512231200_UpdateUserEndDate")]
+    partial class UpdateUserEndDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,20 +50,21 @@ namespace OrderManagerBack.Migrations
 
                     b.Property<string>("MaterialCode")
                         .IsRequired()
-                        .HasColumnType("VARCHAR(50)");
+                        .HasMaxLength(50)
+                        .HasColumnType("VARCHAR")
+                        .HasColumnName("MaterialCode");
 
                     b.Property<string>("Order")
-                        .HasColumnType("VARCHAR(50)");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("VARCHAR")
+                        .HasColumnName("Order");
 
                     b.Property<decimal>("Quantity")
                         .HasColumnType("NUMERIC(18,2)")
                         .HasColumnName("Quantity");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MaterialCode");
-
-                    b.HasIndex("Order");
 
                     b.ToTable("Production");
                 });
@@ -118,15 +122,15 @@ namespace OrderManagerBack.Migrations
 
                     b.Property<string>("ProductCode")
                         .IsRequired()
-                        .HasColumnType("VARCHAR(50)");
+                        .HasMaxLength(50)
+                        .HasColumnType("VARCHAR")
+                        .HasColumnName("ProductCode");
 
                     b.Property<decimal>("Quantity")
                         .HasColumnType("NUMERIC(18,2)")
                         .HasColumnName("Quantity");
 
                     b.HasKey("OrderCode");
-
-                    b.HasIndex("ProductCode");
 
                     b.ToTable("Order");
                 });
@@ -172,34 +176,6 @@ namespace OrderManagerBack.Migrations
                     b.HasIndex("MaterialCode");
 
                     b.ToTable("ProductMaterial");
-                });
-
-            modelBuilder.Entity("OrderManagerBack.Entities.Production", b =>
-                {
-                    b.HasOne("OrderManagerBack.Models.Material", "Material")
-                        .WithMany()
-                        .HasForeignKey("MaterialCode")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("OrderManagerBack.Models.Order", "OrderObj")
-                        .WithMany()
-                        .HasForeignKey("Order");
-
-                    b.Navigation("Material");
-
-                    b.Navigation("OrderObj");
-                });
-
-            modelBuilder.Entity("OrderManagerBack.Models.Order", b =>
-                {
-                    b.HasOne("OrderManagerBack.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductCode")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("ProductMaterial", b =>

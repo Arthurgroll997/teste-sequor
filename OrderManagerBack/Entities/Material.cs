@@ -15,6 +15,6 @@ namespace OrderManagerBack.Models
         [MaxLength(500)]
         public string MaterialDescription { get; set; }
 
-        public List<Product> Products { get; } = []; // Usado para dar join na tabela do meio
+        public List<Product> Products { get; } = []; // Usado para dar join na tabela do meio chamada "ProductMaterial"
     }
 }
