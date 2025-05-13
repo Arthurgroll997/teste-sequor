@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using OrderManagerBack.Dto;
 
 namespace OrderManagerBack.Models
 {
@@ -16,5 +17,14 @@ namespace OrderManagerBack.Models
         public string MaterialDescription { get; set; }
 
         public List<Product> Products { get; } = []; // Usado para dar join na tabela do meio chamada "ProductMaterial"
+
+        public MaterialDto ToDto()
+        {
+            return new MaterialDto
+            {
+                MaterialCode = MaterialCode,
+                MaterialDescription = MaterialDescription
+            };
+        }
     }
 }

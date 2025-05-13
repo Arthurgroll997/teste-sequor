@@ -1,20 +1,109 @@
-﻿namespace OrderManagerTests
+﻿using Microsoft.AspNetCore.Mvc;
+using OrderManagerBack.Controllers;
+using OrderManagerBack.Dto;
+
+namespace OrderManagerTests
 {
-    public class OrderTest
+    public class OrderTest : IClassFixture<TestDatabaseFixture>
     {
-        [Fact]
-        public void AddBlog()
+        public TestDatabaseFixture Fixture { get; set; }
+
+        public OrderTest(TestDatabaseFixture fixture)
         {
-            //using var context = Fixture.CreateContext();
-            //context.Database.BeginTransaction();
+            Fixture = fixture;
+        }
 
-            //var controller = new BloggingController(context);
-            //await controller.AddBlog("Blog3", "http://blog3.com");
+        [Fact]
+        public async Task GetOrdersShouldReturnSuccessfully()
+        {
+            using var context = Fixture.CreateContext();
+            var orderController = new OrderController(context);
 
-            //context.ChangeTracker.Clear();
+            var ordens = orderController.GetOrders();
 
-            //var blog = await context.Blogs.SingleAsync(b => b.Name == "Blog3");
-            //Assert.Equal("http://blog3.com", blog.Url);
+            var okResult = Assert.IsType<OkObjectResult>(ordens);
+
+            dynamic returnValue = okResult.Value;
+            Assert.NotNull(returnValue);
+
+            var ordersProperty = returnValue.GetType().GetProperty("orders");
+            Assert.NotNull(ordersProperty);
+
+            var orders = ordersProperty.GetValue(returnValue) as IEnumerable<OrderDto>;
+            Assert.NotNull(orders);
+            Assert.NotEmpty(orders);
+        }
+
+        [Fact]
+        public async Task GetProductionShouldReturnSuccessfully()
+        {
+
+        }
+
+        [Fact]
+        public async Task SetProductionShouldWorkCorrecty()
+        {
+
+        }
+
+        [Fact]
+        public async Task SetProductionShouldNotWorkWithInvalidEmail()
+        {
+
+        }
+
+        [Fact]
+        public async Task SetProductionShouldNotWithoutEmail()
+        {
+
+        }
+
+        [Fact]
+        public async Task SetProductionShouldNotWorkWhenInvalidOrderIsGiven()
+        {
+
+        }
+
+        [Fact]
+        public async Task SetProductionShouldNotWorkWhenUserAppointedDateExpired()
+        {
+
+        }
+
+        [Fact]
+        public async Task SetProductionShouldNotWorkWhenUserTriesBeforeAppointedDate()
+        {
+
+        }
+
+        [Fact]
+        public async Task SetProductionShouldNotWorkWithQuantityLessThanOrEqualToZero()
+        {
+
+        }
+
+        [Fact]
+        public async Task SetProductionShouldNotWorkWithQuantityGreaterThanOrderQuantity()
+        {
+
+        }
+
+        [Fact]
+        public async Task SetProductionShouldNotWorkWithMaterialsNotIncludedInOrder()
+        {
+
+        }
+
+        [Fact]
+        public async Task SetProductionShouldNotWorkWithCycleTimeLessThanZero()
+        {
+
+        }
+
+        [Fact]
+        public async Task SetProductionShouldWorkButWarnWhenCycleTimeLessThanProductCycleTime()
+        {
+
         }
     }
 }

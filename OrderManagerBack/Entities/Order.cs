@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Numerics;
+using OrderManagerBack.Dto;
 
 namespace OrderManagerBack.Models
 {
@@ -17,5 +18,19 @@ namespace OrderManagerBack.Models
                                               // alta precisão de +15 dígitos recomendada.
 
         public Product Product { get; set; } // Simplifica para obter o produto e gera a mesma estrutura de tabela requisitada
+    
+        public OrderDto ToDto()
+        {
+            return new()
+            {
+                Order = OrderCode,
+                Quantity = Quantity,
+                ProductCode = Product.ProductCode,
+                ProductDescription = Product.ProductDescription,
+                Image = Product.Image,
+                CycleTime = Product.CycleTime,
+                Materials = Product.Materials.Select(mat => mat.ToDto()).ToList(),
+            };
+        }
     }
 }
