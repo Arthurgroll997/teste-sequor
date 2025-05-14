@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using OrderManager;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-
-namespace OrderManagerFront
+﻿namespace OrderManagerFront
 {
     public partial class FormProducoes : Form
     {
@@ -49,6 +37,7 @@ namespace OrderManagerFront
                 new ColumnHeader() { Text = "Cycle Time" },
             ]);
 
+            // Resize das colunas, para preencherem completamente o ListView
             var totalWidth = lstProductions.Width;
             var totalCol = lstProductions.Columns.Count;
 

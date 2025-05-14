@@ -38,5 +38,25 @@ namespace OrderManagerFront
 
             return productions;
         }
+
+        public static List<OrderDto> GetOrders()
+        {
+            HttpResponseMessage response = client.GetAsync(getOrdersRoute).Result;
+
+            response.EnsureSuccessStatusCode();
+
+            string responseBody = response.Content.ReadAsStringAsync().Result;
+
+            var jsonDoc = JsonDocument.Parse(responseBody);
+            var root = jsonDoc.RootElement;
+            var productionsElement = root.GetProperty("orders");
+
+            var txt = productionsElement.GetRawText();
+
+            List<OrderDto> orders =
+                JsonSerializer.Deserialize<List<OrderDto>>(productionsElement.GetRawText(), jsonSerializerOptions)!;
+
+            return orders;
+        }
     }
 }

@@ -31,7 +31,7 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormOrdens));
             panel1 = new Panel();
-            comboBox1 = new ComboBox();
+            orderCmbBox = new ComboBox();
             lblStatus = new Label();
             formPanel = new Panel();
             formBtnSend = new Button();
@@ -74,7 +74,7 @@
             // 
             // panel1
             // 
-            panel1.Controls.Add(comboBox1);
+            panel1.Controls.Add(orderCmbBox);
             panel1.Controls.Add(lblStatus);
             panel1.Controls.Add(formPanel);
             panel1.Controls.Add(orderPanel);
@@ -85,16 +85,17 @@
             panel1.Size = new Size(1296, 757);
             panel1.TabIndex = 0;
             // 
-            // comboBox1
+            // orderCmbBox
             // 
-            comboBox1.Enabled = false;
-            comboBox1.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(208, 19);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(179, 28);
-            comboBox1.TabIndex = 5;
-            comboBox1.Text = "Carregando...";
+            orderCmbBox.Enabled = false;
+            orderCmbBox.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            orderCmbBox.FormattingEnabled = true;
+            orderCmbBox.Location = new Point(208, 19);
+            orderCmbBox.Name = "orderCmbBox";
+            orderCmbBox.Size = new Size(179, 28);
+            orderCmbBox.TabIndex = 5;
+            orderCmbBox.Text = "Carregando...";
+            orderCmbBox.SelectedIndexChanged += orderCmbBox_SelectedIndexChanged;
             // 
             // lblStatus
             // 
@@ -355,7 +356,6 @@
             label4.Size = new Size(179, 23);
             label4.TabIndex = 7;
             label4.Text = "Cód. do Produto:";
-            label4.Click += label4_Click;
             // 
             // label3
             // 
@@ -376,7 +376,6 @@
             orderImgProduct.SizeMode = PictureBoxSizeMode.StretchImage;
             orderImgProduct.TabIndex = 5;
             orderImgProduct.TabStop = false;
-            orderImgProduct.Click += pictureBox2_Click;
             // 
             // lblWaitingOrder
             // 
@@ -419,6 +418,10 @@
             pictureBox1.TabIndex = 1;
             pictureBox1.TabStop = false;
             // 
+            // timerCycleTime
+            // 
+            timerCycleTime.Tick += timerCycleTime_Tick;
+            // 
             // FormOrdens
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -450,7 +453,7 @@
         private Button btnSeeProduction;
         private Panel orderPanel;
         private Label label1;
-        private ComboBox comboBox1;
+        private ComboBox orderCmbBox;
         private Label lblStatus;
         private Panel formPanel;
         private PictureBox orderImgProduct;
