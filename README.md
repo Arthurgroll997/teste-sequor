@@ -35,4 +35,8 @@
 - Basta acessar o diretório OrderManagerBack e rodar o comando "dotnet run", esperar o banco estar disponível para conexões e iniciar o Windows Forms pelo depurador do Visual Studio 2022.
 - Para rodar os testes, basta acessar o diretório dos testes (OrderManagerTests) e rodar "dotnet test" que eles serão executados automaticamente.
 
+## Observações importantes
+
+- O email de usuário para testes recomendado é o "teste@sequor.com.br"
+
 ##### Autor: Arthur Von Groll dos Santos
