@@ -135,6 +135,7 @@
             formBtnSend.TabIndex = 27;
             formBtnSend.Text = "Enviar";
             formBtnSend.UseVisualStyleBackColor = true;
+            formBtnSend.Click += formBtnSend_Click;
             // 
             // formDateProduction
             // 
@@ -168,9 +169,12 @@
             formNumericQuantity.Enabled = false;
             formNumericQuantity.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             formNumericQuantity.Location = new Point(157, 189);
+            formNumericQuantity.Maximum = new decimal(new int[] { 99999999, 0, 0, 0 });
+            formNumericQuantity.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             formNumericQuantity.Name = "formNumericQuantity";
             formNumericQuantity.Size = new Size(301, 26);
             formNumericQuantity.TabIndex = 24;
+            formNumericQuantity.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // label13
             // 
@@ -258,9 +262,11 @@
             // 
             orderlistMaterials.Location = new Point(19, 161);
             orderlistMaterials.Name = "orderlistMaterials";
+            orderlistMaterials.Scrollable = false;
             orderlistMaterials.Size = new Size(718, 133);
             orderlistMaterials.TabIndex = 17;
             orderlistMaterials.UseCompatibleStateImageBehavior = false;
+            orderlistMaterials.View = View.Details;
             // 
             // label8
             // 

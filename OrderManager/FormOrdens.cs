@@ -1,3 +1,5 @@
+using System.Buffers.Text;
+using System.Windows.Forms;
 using OrderManagerBack.Dto;
 using OrderManagerFront;
 
@@ -17,6 +19,8 @@ namespace OrderManager
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            formDateProduction.Format = DateTimePickerFormat.Custom;
+            formDateProduction.CustomFormat = "yyyy-MM-dd HH:mm:ss";
             ToggleOrderPanelElements(false);
             lblWaitingOrder.Show();
 
@@ -69,6 +73,7 @@ namespace OrderManager
 
             ToggleOrderPanelElements(true);
             lblStatus.Text = "Aguardando envio do formulário...";
+            lblStatus.ForeColor = Color.Black;
             lblWaitingOrder.Visible = false;
         }
 
@@ -115,11 +120,71 @@ namespace OrderManager
 
                 i++;
             }
+
+            // Puxando a imagem
+            byte[] imageBytes = Convert.FromBase64String(selectedOrder.Image);
+
+            using (var ms = new MemoryStream(imageBytes))
+            {
+                Image image = Image.FromStream(ms);
+                orderImgProduct.Image = image;
+            }
         }
 
         private void SetupFormPanel()
         {
+            formTxtEmail.Enabled = true;
+            formComboMaterialCode.Items.Clear();
+            formDateProduction.Enabled = true;
+            formNumericQuantity.Enabled = true;
 
+            foreach (var material in selectedOrder!.Materials)
+            {
+                formComboMaterialCode.Items.Add(material.MaterialCode);
+            }
+
+            formComboMaterialCode.Enabled = true;
+            formComboMaterialCode.SelectedIndex = 0;
+        }
+
+        private void ResetForm()
+        {
+            formTxtEmail.Text = "";
+            formComboMaterialCode.SelectedIndex = 0;
+            formNumericQuantity.Value = 1;
+            cycleTimeTaken = 0m;
+            formBtnSend.Enabled = false;
+            formDateProduction.Value = DateTime.Now;
+        }
+
+        private void formBtnSend_Click(object sender, EventArgs e)
+        {
+            lblStatus.ForeColor = Color.Black;
+
+            SetProductionInputDto input = new SetProductionInputDto()
+            {
+                Email = formTxtEmail.Text,
+                Order = selectedOrder!.Order,
+                ProductionDate = formDateProduction.Value.ToString("yyyy-MM-dd"),
+                ProductionTime = formDateProduction.Value.ToString("HH:mm:ss"),
+                Quantity = formNumericQuantity.Value,
+                MaterialCode = (string)formComboMaterialCode.SelectedItem!,
+                CycleTime = cycleTimeTaken,
+            };
+
+            var result = OrderFetcher.SetProduction(input);
+
+            if (result.Status == 200)
+            {
+                lblStatus.ForeColor = Color.ForestGreen;
+                ResetForm();
+            }
+            else
+            {
+                lblStatus.ForeColor = Color.LightSalmon;
+            }
+
+            lblStatus.Text = result.Description;
         }
     }
 }

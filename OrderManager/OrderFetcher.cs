@@ -1,4 +1,6 @@
 ﻿using System.Reflection.Metadata;
+using System.Security.Policy;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using OrderManagerBack.Dto;
@@ -57,6 +59,22 @@ namespace OrderManagerFront
                 JsonSerializer.Deserialize<List<OrderDto>>(productionsElement.GetRawText(), jsonSerializerOptions)!;
 
             return orders;
+        }
+
+        public static SetProductionStatusDto SetProduction(SetProductionInputDto input)
+        {
+            var json = JsonSerializer.Serialize(input);
+
+            using (var content = new StringContent(json, Encoding.UTF8, "application/json"))
+            {
+                var response = client.PostAsync(setProductionRoute, content).Result;
+
+                string resultContent = response.Content.ReadAsStringAsync().Result;
+
+                var obj = JsonSerializer.Deserialize<SetProductionStatusDto>(resultContent, jsonSerializerOptions)!;
+
+                return obj;
+            }
         }
     }
 }
