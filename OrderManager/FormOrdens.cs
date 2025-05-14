@@ -12,7 +12,11 @@ namespace OrderManager
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e) { }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            HideOrderPanelElements();
+            lblWaitingOrder.Show();
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -28,6 +32,12 @@ namespace OrderManager
         private void pictureBox2_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void HideOrderPanelElements()
+        {
+            foreach (Control control in orderPanel.Controls)
+                control.Hide();
         }
     }
 }

@@ -32,53 +32,54 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormOrdens));
             panel1 = new Panel();
             comboBox1 = new ComboBox();
-            label2 = new Label();
-            panel3 = new Panel();
-            button2 = new Button();
-            dateTimePicker1 = new DateTimePicker();
-            comboBox2 = new ComboBox();
+            lblStatus = new Label();
+            formPanel = new Panel();
+            formBtnSend = new Button();
+            formDateProduction = new DateTimePicker();
+            formComboMaterialCode = new ComboBox();
             label14 = new Label();
-            numericUpDown1 = new NumericUpDown();
+            formNumericQuantity = new NumericUpDown();
             label13 = new Label();
             label12 = new Label();
             label10 = new Label();
-            textBox5 = new TextBox();
+            formTxtEmail = new TextBox();
             label9 = new Label();
-            panel2 = new Panel();
+            orderPanel = new Panel();
             label11 = new Label();
-            listView1 = new ListView();
+            orderlistMaterials = new ListView();
             label8 = new Label();
-            textBox4 = new TextBox();
-            richTextBox1 = new RichTextBox();
+            orderTxtOrder = new TextBox();
+            orderTxtProductDescription = new RichTextBox();
             label7 = new Label();
-            textBox3 = new TextBox();
+            orderTxtQuantity = new TextBox();
             label6 = new Label();
-            textBox2 = new TextBox();
+            orderTxtCycleTime = new TextBox();
             label5 = new Label();
-            textBox1 = new TextBox();
+            orderTxtProductCode = new TextBox();
             label4 = new Label();
             label3 = new Label();
-            pictureBox2 = new PictureBox();
+            orderImgProduct = new PictureBox();
+            lblWaitingOrder = new Label();
             label1 = new Label();
-            button1 = new Button();
+            btnSeeProduction = new Button();
             pictureBox1 = new PictureBox();
             timerCycleTime = new System.Windows.Forms.Timer(components);
             panel1.SuspendLayout();
-            panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
-            panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            formPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)formNumericQuantity).BeginInit();
+            orderPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)orderImgProduct).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // panel1
             // 
             panel1.Controls.Add(comboBox1);
-            panel1.Controls.Add(label2);
-            panel1.Controls.Add(panel3);
-            panel1.Controls.Add(panel2);
+            panel1.Controls.Add(lblStatus);
+            panel1.Controls.Add(formPanel);
+            panel1.Controls.Add(orderPanel);
             panel1.Controls.Add(label1);
-            panel1.Controls.Add(button1);
+            panel1.Controls.Add(btnSeeProduction);
             panel1.Location = new Point(12, 172);
             panel1.Name = "panel1";
             panel1.Size = new Size(1296, 757);
@@ -95,280 +96,297 @@
             comboBox1.TabIndex = 5;
             comboBox1.Text = "Carregando...";
             // 
-            // label2
+            // lblStatus
             // 
-            label2.Font = new Font("Century Gothic", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(15, 697);
-            label2.Name = "label2";
-            label2.Size = new Size(1257, 52);
-            label2.TabIndex = 4;
-            label2.Text = "Label de retorno do envio do back";
-            label2.TextAlign = ContentAlignment.MiddleCenter;
+            lblStatus.Font = new Font("Century Gothic", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblStatus.Location = new Point(15, 697);
+            lblStatus.Name = "lblStatus";
+            lblStatus.Size = new Size(1275, 52);
+            lblStatus.TabIndex = 4;
+            lblStatus.Text = "Selecione uma ordem";
+            lblStatus.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // panel3
+            // formPanel
             // 
-            panel3.BackColor = SystemColors.ControlLight;
-            panel3.Controls.Add(button2);
-            panel3.Controls.Add(dateTimePicker1);
-            panel3.Controls.Add(comboBox2);
-            panel3.Controls.Add(label14);
-            panel3.Controls.Add(numericUpDown1);
-            panel3.Controls.Add(label13);
-            panel3.Controls.Add(label12);
-            panel3.Controls.Add(label10);
-            panel3.Controls.Add(textBox5);
-            panel3.Controls.Add(label9);
-            panel3.Location = new Point(778, 66);
-            panel3.Name = "panel3";
-            panel3.Size = new Size(512, 624);
-            panel3.TabIndex = 3;
+            formPanel.BackColor = SystemColors.ControlLight;
+            formPanel.Controls.Add(formBtnSend);
+            formPanel.Controls.Add(formDateProduction);
+            formPanel.Controls.Add(formComboMaterialCode);
+            formPanel.Controls.Add(label14);
+            formPanel.Controls.Add(formNumericQuantity);
+            formPanel.Controls.Add(label13);
+            formPanel.Controls.Add(label12);
+            formPanel.Controls.Add(label10);
+            formPanel.Controls.Add(formTxtEmail);
+            formPanel.Controls.Add(label9);
+            formPanel.Location = new Point(778, 66);
+            formPanel.Name = "formPanel";
+            formPanel.Size = new Size(512, 624);
+            formPanel.TabIndex = 3;
             // 
-            // button2
+            // formBtnSend
             // 
-            button2.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button2.Location = new Point(16, 548);
-            button2.Name = "button2";
-            button2.Size = new Size(481, 57);
-            button2.TabIndex = 27;
-            button2.Text = "Enviar";
-            button2.UseVisualStyleBackColor = true;
+            formBtnSend.Enabled = false;
+            formBtnSend.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            formBtnSend.Location = new Point(16, 548);
+            formBtnSend.Name = "formBtnSend";
+            formBtnSend.Size = new Size(481, 57);
+            formBtnSend.TabIndex = 27;
+            formBtnSend.Text = "Enviar";
+            formBtnSend.UseVisualStyleBackColor = true;
             // 
-            // dateTimePicker1
+            // formDateProduction
             // 
-            dateTimePicker1.Location = new Point(193, 350);
-            dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(301, 27);
-            dateTimePicker1.TabIndex = 20;
+            formDateProduction.Enabled = false;
+            formDateProduction.Location = new Point(111, 273);
+            formDateProduction.Name = "formDateProduction";
+            formDateProduction.Size = new Size(301, 27);
+            formDateProduction.TabIndex = 20;
             // 
-            // comboBox2
+            // formComboMaterialCode
             // 
-            comboBox2.FormattingEnabled = true;
-            comboBox2.Location = new Point(193, 188);
-            comboBox2.Name = "comboBox2";
-            comboBox2.Size = new Size(301, 28);
-            comboBox2.TabIndex = 26;
+            formComboMaterialCode.Enabled = false;
+            formComboMaterialCode.FormattingEnabled = true;
+            formComboMaterialCode.Location = new Point(157, 142);
+            formComboMaterialCode.Name = "formComboMaterialCode";
+            formComboMaterialCode.Size = new Size(301, 28);
+            formComboMaterialCode.TabIndex = 26;
             // 
             // label14
             // 
             label14.AutoSize = true;
-            label14.Font = new Font("Century Gothic", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label14.Location = new Point(13, 188);
+            label14.Font = new Font("Century Gothic", 12F);
+            label14.Location = new Point(16, 145);
             label14.Name = "label14";
-            label14.Size = new Size(109, 27);
+            label14.Size = new Size(94, 23);
             label14.TabIndex = 25;
-            label14.Text = "Material";
+            label14.Text = "Material:";
             // 
-            // numericUpDown1
+            // formNumericQuantity
             // 
-            numericUpDown1.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            numericUpDown1.Location = new Point(193, 269);
-            numericUpDown1.Name = "numericUpDown1";
-            numericUpDown1.Size = new Size(301, 26);
-            numericUpDown1.TabIndex = 24;
+            formNumericQuantity.Enabled = false;
+            formNumericQuantity.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            formNumericQuantity.Location = new Point(157, 189);
+            formNumericQuantity.Name = "formNumericQuantity";
+            formNumericQuantity.Size = new Size(301, 26);
+            formNumericQuantity.TabIndex = 24;
             // 
             // label13
             // 
             label13.AutoSize = true;
-            label13.Font = new Font("Century Gothic", 24F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label13.Location = new Point(47, 30);
+            label13.Font = new Font("Century Gothic", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label13.Location = new Point(7, 28);
             label13.Name = "label13";
-            label13.Size = new Size(432, 49);
+            label13.Size = new Size(335, 37);
             label13.TabIndex = 23;
-            label13.Text = "Envio para Produção";
+            label13.Text = "Envio para produção:";
             // 
             // label12
             // 
             label12.AutoSize = true;
-            label12.Font = new Font("Century Gothic", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label12.Location = new Point(13, 267);
+            label12.Font = new Font("Century Gothic", 12F);
+            label12.Location = new Point(15, 192);
             label12.Name = "label12";
-            label12.Size = new Size(153, 27);
+            label12.Size = new Size(135, 23);
             label12.TabIndex = 22;
-            label12.Text = "Quantidade";
+            label12.Text = "Quantidade:";
             // 
             // label10
             // 
-            label10.Font = new Font("Century Gothic", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label10.Location = new Point(13, 335);
+            label10.Font = new Font("Century Gothic", 12F);
+            label10.Location = new Point(3, 236);
             label10.Name = "label10";
-            label10.Size = new Size(271, 65);
+            label10.Size = new Size(506, 29);
             label10.TabIndex = 21;
-            label10.Text = "Data de Apontamento";
+            label10.Text = "Data de Apontamento:";
+            label10.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // textBox5
+            // formTxtEmail
             // 
-            textBox5.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBox5.Location = new Point(193, 118);
-            textBox5.Name = "textBox5";
-            textBox5.Size = new Size(301, 26);
-            textBox5.TabIndex = 19;
+            formTxtEmail.Enabled = false;
+            formTxtEmail.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            formTxtEmail.Location = new Point(157, 98);
+            formTxtEmail.Name = "formTxtEmail";
+            formTxtEmail.Size = new Size(301, 26);
+            formTxtEmail.TabIndex = 19;
             // 
             // label9
             // 
             label9.AutoSize = true;
-            label9.Font = new Font("Century Gothic", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label9.Location = new Point(13, 116);
+            label9.Font = new Font("Century Gothic", 12F);
+            label9.Location = new Point(17, 99);
             label9.Name = "label9";
-            label9.Size = new Size(74, 27);
+            label9.Size = new Size(67, 23);
             label9.TabIndex = 18;
-            label9.Text = "Email";
+            label9.Text = "Email:";
             // 
-            // panel2
+            // orderPanel
             // 
-            panel2.BackColor = SystemColors.ControlLight;
-            panel2.Controls.Add(label11);
-            panel2.Controls.Add(listView1);
-            panel2.Controls.Add(label8);
-            panel2.Controls.Add(textBox4);
-            panel2.Controls.Add(richTextBox1);
-            panel2.Controls.Add(label7);
-            panel2.Controls.Add(textBox3);
-            panel2.Controls.Add(label6);
-            panel2.Controls.Add(textBox2);
-            panel2.Controls.Add(label5);
-            panel2.Controls.Add(textBox1);
-            panel2.Controls.Add(label4);
-            panel2.Controls.Add(label3);
-            panel2.Controls.Add(pictureBox2);
-            panel2.Location = new Point(15, 66);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(757, 624);
-            panel2.TabIndex = 2;
+            orderPanel.BackColor = SystemColors.ControlLight;
+            orderPanel.Controls.Add(label11);
+            orderPanel.Controls.Add(orderlistMaterials);
+            orderPanel.Controls.Add(label8);
+            orderPanel.Controls.Add(orderTxtOrder);
+            orderPanel.Controls.Add(orderTxtProductDescription);
+            orderPanel.Controls.Add(label7);
+            orderPanel.Controls.Add(orderTxtQuantity);
+            orderPanel.Controls.Add(label6);
+            orderPanel.Controls.Add(orderTxtCycleTime);
+            orderPanel.Controls.Add(label5);
+            orderPanel.Controls.Add(orderTxtProductCode);
+            orderPanel.Controls.Add(label4);
+            orderPanel.Controls.Add(label3);
+            orderPanel.Controls.Add(orderImgProduct);
+            orderPanel.Controls.Add(lblWaitingOrder);
+            orderPanel.Location = new Point(15, 66);
+            orderPanel.Name = "orderPanel";
+            orderPanel.Size = new Size(757, 624);
+            orderPanel.TabIndex = 2;
             // 
             // label11
             // 
             label11.AutoSize = true;
-            label11.Font = new Font("Century Gothic", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label11.Font = new Font("Century Gothic", 12F);
             label11.Location = new Point(22, 302);
             label11.Name = "label11";
-            label11.Size = new Size(108, 27);
+            label11.Size = new Size(98, 23);
             label11.TabIndex = 18;
-            label11.Text = "Imagem";
+            label11.Text = "Imagem:";
             // 
-            // listView1
+            // orderlistMaterials
             // 
-            listView1.Location = new Point(19, 161);
-            listView1.Name = "listView1";
-            listView1.Size = new Size(718, 133);
-            listView1.TabIndex = 17;
-            listView1.UseCompatibleStateImageBehavior = false;
+            orderlistMaterials.Location = new Point(19, 161);
+            orderlistMaterials.Name = "orderlistMaterials";
+            orderlistMaterials.Size = new Size(718, 133);
+            orderlistMaterials.TabIndex = 17;
+            orderlistMaterials.UseCompatibleStateImageBehavior = false;
             // 
             // label8
             // 
             label8.AutoSize = true;
-            label8.Font = new Font("Century Gothic", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label8.Font = new Font("Century Gothic", 12F);
             label8.Location = new Point(19, 127);
             label8.Name = "label8";
-            label8.Size = new Size(118, 27);
+            label8.Size = new Size(100, 23);
             label8.TabIndex = 16;
-            label8.Text = "Materiais";
+            label8.Text = "Materiais:";
             // 
-            // textBox4
+            // orderTxtOrder
             // 
-            textBox4.Font = new Font("Century Gothic", 9F);
-            textBox4.Location = new Point(178, 35);
-            textBox4.Name = "textBox4";
-            textBox4.ReadOnly = true;
-            textBox4.Size = new Size(160, 26);
-            textBox4.TabIndex = 15;
+            orderTxtOrder.Font = new Font("Century Gothic", 9F);
+            orderTxtOrder.Location = new Point(178, 35);
+            orderTxtOrder.Name = "orderTxtOrder";
+            orderTxtOrder.ReadOnly = true;
+            orderTxtOrder.Size = new Size(160, 26);
+            orderTxtOrder.TabIndex = 15;
             // 
-            // richTextBox1
+            // orderTxtProductDescription
             // 
-            richTextBox1.Location = new Point(386, 339);
-            richTextBox1.Name = "richTextBox1";
-            richTextBox1.ReadOnly = true;
-            richTextBox1.Size = new Size(351, 266);
-            richTextBox1.TabIndex = 14;
-            richTextBox1.Text = "";
+            orderTxtProductDescription.Location = new Point(386, 339);
+            orderTxtProductDescription.Name = "orderTxtProductDescription";
+            orderTxtProductDescription.ReadOnly = true;
+            orderTxtProductDescription.Size = new Size(351, 266);
+            orderTxtProductDescription.TabIndex = 14;
+            orderTxtProductDescription.Text = "";
             // 
             // label7
             // 
             label7.AutoSize = true;
-            label7.Font = new Font("Century Gothic", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label7.Font = new Font("Century Gothic", 12F);
             label7.Location = new Point(386, 300);
             label7.Name = "label7";
-            label7.Size = new Size(259, 27);
+            label7.Size = new Size(229, 23);
             label7.TabIndex = 13;
-            label7.Text = "Descrição do Produto";
+            label7.Text = "Descrição do Produto:";
             // 
-            // textBox3
+            // orderTxtQuantity
             // 
-            textBox3.Font = new Font("Century Gothic", 9F);
-            textBox3.Location = new Point(178, 75);
-            textBox3.Name = "textBox3";
-            textBox3.ReadOnly = true;
-            textBox3.Size = new Size(160, 26);
-            textBox3.TabIndex = 12;
+            orderTxtQuantity.Font = new Font("Century Gothic", 9F);
+            orderTxtQuantity.Location = new Point(178, 75);
+            orderTxtQuantity.Name = "orderTxtQuantity";
+            orderTxtQuantity.ReadOnly = true;
+            orderTxtQuantity.Size = new Size(160, 26);
+            orderTxtQuantity.TabIndex = 12;
             // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Font = new Font("Century Gothic", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label6.Font = new Font("Century Gothic", 12F);
             label6.Location = new Point(19, 74);
             label6.Name = "label6";
-            label6.Size = new Size(153, 27);
+            label6.Size = new Size(135, 23);
             label6.TabIndex = 11;
-            label6.Text = "Quantidade";
+            label6.Text = "Quantidade:";
             // 
-            // textBox2
+            // orderTxtCycleTime
             // 
-            textBox2.Font = new Font("Century Gothic", 9F);
-            textBox2.Location = new Point(577, 77);
-            textBox2.Name = "textBox2";
-            textBox2.ReadOnly = true;
-            textBox2.Size = new Size(160, 26);
-            textBox2.TabIndex = 10;
+            orderTxtCycleTime.Font = new Font("Century Gothic", 9F);
+            orderTxtCycleTime.Location = new Point(577, 77);
+            orderTxtCycleTime.Name = "orderTxtCycleTime";
+            orderTxtCycleTime.ReadOnly = true;
+            orderTxtCycleTime.Size = new Size(160, 26);
+            orderTxtCycleTime.TabIndex = 10;
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Font = new Font("Century Gothic", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label5.Font = new Font("Century Gothic", 12F);
             label5.Location = new Point(371, 76);
             label5.Name = "label5";
-            label5.Size = new Size(195, 27);
+            label5.Size = new Size(171, 23);
             label5.TabIndex = 9;
-            label5.Text = "Tempo de Ciclo";
+            label5.Text = "Tempo de Ciclo:";
             // 
-            // textBox1
+            // orderTxtProductCode
             // 
-            textBox1.Font = new Font("Century Gothic", 9F);
-            textBox1.Location = new Point(577, 33);
-            textBox1.Name = "textBox1";
-            textBox1.ReadOnly = true;
-            textBox1.Size = new Size(160, 26);
-            textBox1.TabIndex = 8;
+            orderTxtProductCode.Font = new Font("Century Gothic", 9F);
+            orderTxtProductCode.Location = new Point(577, 33);
+            orderTxtProductCode.Name = "orderTxtProductCode";
+            orderTxtProductCode.ReadOnly = true;
+            orderTxtProductCode.Size = new Size(160, 26);
+            orderTxtProductCode.TabIndex = 8;
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Font = new Font("Century Gothic", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label4.Location = new Point(371, 31);
+            label4.Font = new Font("Century Gothic", 12F);
+            label4.Location = new Point(371, 36);
             label4.Name = "label4";
-            label4.Size = new Size(200, 27);
+            label4.Size = new Size(179, 23);
             label4.TabIndex = 7;
-            label4.Text = "Cód. do Produto";
+            label4.Text = "Cód. do Produto:";
             label4.Click += label4_Click;
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Font = new Font("Century Gothic", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(19, 34);
+            label3.Font = new Font("Century Gothic", 12F);
+            label3.Location = new Point(22, 36);
             label3.Name = "label3";
-            label3.Size = new Size(92, 27);
+            label3.Size = new Size(84, 23);
             label3.TabIndex = 6;
-            label3.Text = "Ordem";
+            label3.Text = "Ordem:";
             // 
-            // pictureBox2
+            // orderImgProduct
             // 
-            pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
-            pictureBox2.Location = new Point(19, 339);
-            pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(263, 266);
-            pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox2.TabIndex = 5;
-            pictureBox2.TabStop = false;
-            pictureBox2.Click += pictureBox2_Click;
+            orderImgProduct.Image = (Image)resources.GetObject("orderImgProduct.Image");
+            orderImgProduct.Location = new Point(19, 339);
+            orderImgProduct.Name = "orderImgProduct";
+            orderImgProduct.Size = new Size(263, 266);
+            orderImgProduct.SizeMode = PictureBoxSizeMode.StretchImage;
+            orderImgProduct.TabIndex = 5;
+            orderImgProduct.TabStop = false;
+            orderImgProduct.Click += pictureBox2_Click;
+            // 
+            // lblWaitingOrder
+            // 
+            lblWaitingOrder.Font = new Font("Century Gothic", 28.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblWaitingOrder.Location = new Point(3, 0);
+            lblWaitingOrder.Name = "lblWaitingOrder";
+            lblWaitingOrder.Size = new Size(751, 624);
+            lblWaitingOrder.TabIndex = 19;
+            lblWaitingOrder.Text = "Aguardando ordem...";
+            lblWaitingOrder.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label1
             // 
@@ -380,16 +398,16 @@
             label1.TabIndex = 1;
             label1.Text = "Selecionar Ordem";
             // 
-            // button1
+            // btnSeeProduction
             // 
-            button1.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button1.Location = new Point(1091, 20);
-            button1.Name = "button1";
-            button1.Size = new Size(199, 29);
-            button1.TabIndex = 0;
-            button1.Text = "Ver Apontamentos";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            btnSeeProduction.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnSeeProduction.Location = new Point(1091, 20);
+            btnSeeProduction.Name = "btnSeeProduction";
+            btnSeeProduction.Size = new Size(199, 29);
+            btnSeeProduction.TabIndex = 0;
+            btnSeeProduction.Text = "Ver Apontamentos";
+            btnSeeProduction.UseVisualStyleBackColor = true;
+            btnSeeProduction.Click += button1_Click;
             // 
             // pictureBox1
             // 
@@ -408,17 +426,19 @@
             ClientSize = new Size(1314, 941);
             Controls.Add(pictureBox1);
             Controls.Add(panel1);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             Name = "FormOrdens";
             Text = "Gerenciador de Ordens - Visualização de Ordens";
             Load += Form1_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
-            panel3.ResumeLayout(false);
-            panel3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
-            panel2.ResumeLayout(false);
-            panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            formPanel.ResumeLayout(false);
+            formPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)formNumericQuantity).EndInit();
+            orderPanel.ResumeLayout(false);
+            orderPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)orderImgProduct).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }
@@ -427,36 +447,37 @@
 
         private Panel panel1;
         private PictureBox pictureBox1;
-        private Button button1;
-        private Panel panel2;
+        private Button btnSeeProduction;
+        private Panel orderPanel;
         private Label label1;
         private ComboBox comboBox1;
-        private Label label2;
-        private Panel panel3;
-        private PictureBox pictureBox2;
-        private TextBox textBox1;
+        private Label lblStatus;
+        private Panel formPanel;
+        private PictureBox orderImgProduct;
+        private TextBox orderTxtProductCode;
         private Label label4;
         private Label label3;
-        private TextBox textBox3;
+        private TextBox orderTxtQuantity;
         private Label label6;
-        private TextBox textBox2;
+        private TextBox orderTxtCycleTime;
         private Label label5;
-        private RichTextBox richTextBox1;
+        private RichTextBox orderTxtProductDescription;
         private Label label7;
-        private TextBox textBox4;
+        private TextBox orderTxtOrder;
         private Label label8;
-        private ListView listView1;
+        private ListView orderlistMaterials;
         private System.Windows.Forms.Timer timerCycleTime;
         private Label label10;
-        private DateTimePicker dateTimePicker1;
-        private TextBox textBox5;
+        private DateTimePicker formDateProduction;
+        private TextBox formTxtEmail;
         private Label label9;
         private Label label11;
-        private ComboBox comboBox2;
+        private ComboBox formComboMaterialCode;
         private Label label14;
-        private NumericUpDown numericUpDown1;
+        private NumericUpDown formNumericQuantity;
         private Label label13;
         private Label label12;
-        private Button button2;
+        private Button formBtnSend;
+        private Label lblWaitingOrder;
     }
 }
