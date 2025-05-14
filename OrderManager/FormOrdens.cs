@@ -97,8 +97,8 @@ namespace OrderManager
             orderlistMaterials.Columns.Clear();
 
             orderlistMaterials.Columns.AddRange([
-                new ColumnHeader() { Text = "Code" },
-                new ColumnHeader() { Text = "Description" },
+                new ColumnHeader() { Text = "Código" },
+                new ColumnHeader() { Text = "Descrição" },
             ]);
 
             // Resize das colunas, para preencherem completamente o ListView

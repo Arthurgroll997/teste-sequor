@@ -30,11 +30,11 @@
             var producoes = OrderFetcher.GetProductionForEmail(txtEmailProduction.Text);
 
             lstProductions.Columns.AddRange([
-                new ColumnHeader() { Text = "Order" },
-                new ColumnHeader() { Text = "Date" },
-                new ColumnHeader() { Text = "Quantity" },
-                new ColumnHeader() { Text = "Material Code" },
-                new ColumnHeader() { Text = "Cycle Time" },
+                new ColumnHeader() { Text = "Ordem" },
+                new ColumnHeader() { Text = "Data de apontamento" },
+                new ColumnHeader() { Text = "Quantidade" },
+                new ColumnHeader() { Text = "Código do material" },
+                new ColumnHeader() { Text = "Tempo de ciclo" },
             ]);
 
             // Resize das colunas, para preencherem completamente o ListView
