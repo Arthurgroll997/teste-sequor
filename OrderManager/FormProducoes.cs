@@ -7,14 +7,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using OrderManager;
 
 namespace OrderManagerFront
 {
-    public partial class Form2 : Form
+    public partial class FormProducoes : Form
     {
-        public Form2()
+        public FormProducoes()
         {
             InitializeComponent();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Form form1 = Application.OpenForms[0];
+            form1?.Show();
+            Hide();
         }
     }
 }
